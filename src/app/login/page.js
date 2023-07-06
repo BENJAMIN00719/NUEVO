@@ -1,16 +1,37 @@
+'use client'
+import React from "react"
+import { login } from "../../services/firebase/auth"
 import "./login.css"
 
-export default function Login() {
+function Login() {
+
+    const [state, setState] = React.useState({
+        email: "",
+        password: ""
+    })
+
+    function onChange(event) {
+        const value = event.target.value;
+        const name = event.target.name;
+        
+        setState({
+            ...state,
+            [name]: value
+        })
+    }
+
+    function onLogin() {
+        const {email, password} = state;
+        login(email, password)
+    }
+
     return (
         <div className="container">
-            <input type="text"  />
-            <input type="password" />
-            <button>Login</button>
+            <input onChange={onChange} name="email" type="text" value={state.email} />
+            <input onChange={onChange} name="password" type="password" value={state.password} />
+            <button onClick={onLogin}>Login</button>
         </div>
     )
 }
 
-git remote add origin 
-https://<username>:<token>@github.com/<username>/<repoName>.git
-
-git remote add origin https://KalioPacheco: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@github.com/KalioPacheco/next-3b.git
+export default Login;
