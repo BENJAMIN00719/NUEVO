@@ -1,5 +1,7 @@
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore"; 
 import app from "./"
+import db from "./database"
 
 function login(email, password) {
 
@@ -20,15 +22,26 @@ function login(email, password) {
 
 }
 
-function singup(email, password) {
+function singup(params) {
+
+    const {email, password, displayName} = params;
+
     const auth = getAuth(app);
 
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        console.log(userCredential)
-        // ...
+
+        setDoc(
+            doc(db, "profiles", user.uid), 
+            {
+                email: user.email,
+                uid: user.uid,
+                displayName,
+            }
+        );
+
     })
     .catch((error) => {
         const errorCode = error.code;

@@ -7,7 +7,9 @@ function Register() {
 
     const [state, setState] = React.useState({
         email: "",
-        password: ""
+        password: "",
+        confirmPassword: "",
+        displayName: "",
     })
 
     function onChange(event) {
@@ -20,16 +22,33 @@ function Register() {
         })
     }
 
-    function onRegister() {
-        const {email, password} = state;
-        singup(email, password)
+    function onRegister(event) {
+        event.preventDefault();
+        const {email, password, displayName, confirmPassword} = state;
+        if (confirmPassword === password) {
+            const sendable = {
+                email,
+                password,
+                displayName
+            }
+            singup(sendable)
+        } else {
+            alert("Las contraseñas no coinciden")
+        }
     }
 
     return (
         <div className="container">
-            <input onChange={onChange} name="email" type="text" value={state.email} />
-            <input onChange={onChange} name="password" type="password" value={state.password} />
-            <button onClick={onRegister}>Registrarse</button>
+            <form onSubmit={onRegister} style={{
+                display: "flex",
+                flexDirection: "column",
+            }}>
+                <input required onChange={onChange} type="email" name="email" value={state.email} />
+                <input required onChange={onChange} name="password" type="password" value={state.password} />
+                <input required onChange={onChange} name="confirmPassword" type="password" value={state.confirmPassword} />
+                <input required onChange={onChange} name="displayName" type="text" value={state.displayName} />
+                <input type="submit" value="Registrarse" />
+            </form>
         </div>
     )
 }
