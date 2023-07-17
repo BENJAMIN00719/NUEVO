@@ -33,14 +33,11 @@ function singup(params) {
         // Signed in 
         const user = userCredential.user;
 
-        setDoc(
-            doc(db, "profiles", user.uid), 
-            {
-                email: user.email,
-                uid: user.uid,
-                displayName,
-            }
-        );
+        setDoc(doc(db, "profiles", user.uid), {
+            email: user.email,
+            uid: user.uid,
+            displayName,
+        });
 
     })
     .catch((error) => {
